@@ -1,3 +1,4 @@
+                                          aws-auth-patch.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -5,14 +6,17 @@ metadata:
   namespace: kube-system
 data:
   mapRoles: |
-    - groups:
-      - system:bootstrappers
-      - system:nodes
-      rolearn: arn:aws:iam::390270998131:role/default-eks-node-group-20250614233650666800000001
+    - rolearn: arn:aws:iam::390270998131:role/default-eks-node-group-20250614233650666800000001
       username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+    - rolearn: arn:aws:iam::390270998131:role/ec2-instance-role
+      username: ec2-admin
+      groups:
+        - system:masters
   mapUsers: |
     - userarn: arn:aws:iam::390270998131:user/Akshay
       username: Akshay
       groups:
         - system:masters
-
